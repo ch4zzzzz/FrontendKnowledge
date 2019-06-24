@@ -75,7 +75,7 @@ new Promise((resolve, reject) => {
 
 ##  静态方法
 
-### `resolve()`和`rejected()`
+### `resolve()`和`reject()`
 
 `Promise.resolve()`和`Promise.rejected()`返回一个`fulfilled`状态或`rejected`状态的`Promise`对象。
 
