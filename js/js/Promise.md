@@ -47,8 +47,26 @@ promise1.then(function(value) {
 应用`Promise`时的约定：
 
 * 本轮事件循环运行完成之前，回调不会被调用
+
 * `.then()`形式添加的回调函数总会被调用，即便是在异步操作完成之后才被添加的
+
 * 多次调用`.then()`添加的多个回调，会按照插入顺序独立运行
+
+  ```javascript
+  const p = Promise.resolve(0);
+  p.then(res => {
+      console.log(res);
+  })
+  p.then(res => {
+      console.log(res+1)
+  })
+  p.then(res => {
+      console.log(res+2)
+  })
+  // logs: 0, 1, 2
+  ```
+
+  
 
 ## `catch()`
 
@@ -88,7 +106,7 @@ Promise.all([func1(), func2(), func3()])
 .then(([result1, result2, result3]) => { /* use result1, result2 and result3 */ });
 ```
 
-参数中所有`Promise`都完成或参数不包含`Promise`时回调完成，当有一个`Promise`失败是，此实例回调失败，失败原因是第一个失败`Promise`的结果。
+参数中所有`Promise`都完成或参数不包含`Promise`时回调完成并返回一个包含resolve的值的数组，当有一个`Promise`失败时，此实例回调失败，失败原因是第一个失败`Promise`的结果。
 
 ### `race()`
 
