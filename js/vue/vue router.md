@@ -160,5 +160,8 @@ this.$route.params.pathMatch // '/non-existing'
 
 `vue-router` 使用path-to-regexp作为路径匹配引擎，所以支持很多高级的匹配模式，例如：可选的动态路径参数、匹配零个或多个、一个或多个，甚至是自定义正则匹配。
 
+## 控制浏览器路径的原理
 
+* history模式，使用`History.pushState()`和`History.replaceState()`
+* hash模式，`domain.com/#/`，当`#`后的哈希值变化时，通过`hashchange`来监听URL变换，进行页面跳转
 

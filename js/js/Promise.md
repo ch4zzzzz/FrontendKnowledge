@@ -126,3 +126,9 @@ Promise.race([p1, p2]).then(function(value) {
 });
 ```
 
+## 实现一个Promise
+
+```javascript
+
+```
+
