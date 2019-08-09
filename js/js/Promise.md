@@ -128,7 +128,142 @@ Promise.race([p1, p2]).then(function(value) {
 
 ## 实现一个Promise
 
-```javascript
+实现了then方法
 
+```typescript
+const PENDING = 'PENDING'
+const FULFILLED = 'FULFILLED'
+const REJECTED = 'REJECTED'
+
+class MyPromise {
+  _status: string;
+  _value: any;
+  _fulfilledQueues: Array<Function>;
+  _rejectedQueues: Array<Function>;
+
+  constructor (handle: Function) {
+    this._status = PENDING;
+    this._value = undefined;
+
+    this._fulfilledQueues = [];
+    this._rejectedQueues = [];
+
+    try {
+      handle(this._resolve.bind(this), this._reject.bind(this))
+    } catch (err) {
+      this._reject(err);
+    }
+  }
+
+  _resolve (val) {
+    if (this._status !== PENDING) {
+      return;
+    }
+
+    if (val instanceof MyPromise) {
+      return val.then(this._resolve.bind(this), this._reject.bind(this));
+    } else {
+      this._status = FULFILLED;
+      this._value = val;
+    }
+    let fun;
+    while (fun = this._fulfilledQueues.shift()) {
+      fun(val);
+    }
+  }
+
+  _reject (err) {
+    if (this._status !== PENDING) {
+      return;
+    }
+    if (err instanceof MyPromise) {
+      return err.then(this._resolve.bind(this), this._reject.bind(this));
+    } else {
+      this._status = REJECTED;
+      this._value = err;
+    }
+
+    let fun;
+    while (fun = this._rejectedQueues.shift()) {
+      fun(err);
+    }
+  }
+
+  then (onFulfilled?: Function | any, onRejected?: Function | any) {
+    const {_value, _status, _fulfilledQueues, _rejectedQueues} = this;
+    if (!onFulfilled) {
+      onFulfilled = () => _value;
+    }
+    if (!onRejected) {
+      onRejected = () => _value;
+    }
+
+    switch (_status) {
+      case PENDING: {
+        return new MyPromise((res, rej) => {
+          _fulfilledQueues.push((val) => {
+            let ret;
+            // console.log(this)
+            try {
+              ret = onFulfilled(val);
+              if (ret instanceof MyPromise) {
+                ret.then(res, rej);
+              } else {
+                res(ret);
+              }
+            } catch (err) {
+              rej(err);
+            }
+          })
+          _rejectedQueues.push((val) => {
+            let ret;
+            try {
+              ret = onRejected(val);
+              if (ret instanceof MyPromise) {
+                ret.then(res, rej);
+              } else {
+                res(ret);
+              }
+            } catch (err) {
+              rej(err);
+            }
+          })
+        })
+      }
+      case FULFILLED: {
+        return new MyPromise((res, rej) => {
+          let ret;
+          try {
+            ret = onFulfilled(_value);
+            if (ret instanceof MyPromise) {
+              ret.then(res, rej);
+            } else {
+              res(ret);
+            }
+          } catch (err) {
+            rej(err);
+          }
+        })
+      }
+      case REJECTED: {
+        return new MyPromise((res, rej) => {
+          let ret;
+          try {
+            ret = onRejected(_value);
+            if (ret instanceof MyPromise) {
+              ret.then(res, rej);
+            } else {
+              res(ret);
+            }
+          } catch (err) {
+            rej(err);
+          }
+        })
+      }
+    }
+  }
+}
+
+export default MyPromise;
 ```
 
