@@ -91,6 +91,42 @@ new Promise((resolve, reject) => {
 });
 ```
 
+## `finally()`
+
+`finally()` 方法返回一个[`Promise`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)。在promise结束时，无论结果是fulfilled或者是rejected，都会执行指定的回调函数。这为在`Promise`是否成功完成后都需要执行的代码提供了一种方式。
+
+```javascript
+let isLoading = true;
+
+fetch(myRequest).then(function(response) {
+    var contentType = response.headers.get("content-type");
+    if(contentType && contentType.includes("application/json")) {
+      return response.json();
+    }
+    throw new TypeError("Oops, we haven't got JSON!");
+  })
+  .then(function(json) { /* process your JSON further */ })
+  .catch(function(error) { console.log(error); })
+  .finally(function() { isLoading = false; });
+```
+
+## `allSettled()`
+
+`Promise.allSettled()`方法返回一个promise，该promise在所有给定的promise已被解析或被拒绝后解析，并且每个对象都描述每个promise的结果。
+
+```javascript
+const promise1 = Promise.resolve(3);
+const promise2 = new Promise((resolve, reject) => setTimeout(reject, 100, 'foo'));
+const promises = [promise1, promise2];
+
+Promise.allSettled(promises).
+  then((results) => results.forEach((result) => console.log(result.status)));
+
+// expected output:
+// "fulfilled"
+// "rejected"
+```
+
 ##  静态方法
 
 ### `resolve()`和`reject()`
