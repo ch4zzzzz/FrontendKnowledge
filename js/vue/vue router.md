@@ -162,6 +162,6 @@ this.$route.params.pathMatch // '/non-existing'
 
 ## 控制浏览器路径的原理
 
-* history模式，使用`History.pushState()`和`History.replaceState()`
+* history模式，使用`History.pushState()`和`History.replaceState()`来更换路由随后执行路由组件的更换，通过`History.popState()`来监听浏览器url变化
 * hash模式，`domain.com/#/`，当`#`后的哈希值变化时，通过`hashchange`来监听URL变换，进行页面跳转
 
