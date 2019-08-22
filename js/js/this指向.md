@@ -28,6 +28,12 @@ console.log((foo.bar, foo.bar)()); // 1
 
 所以，当使用的函数是一个需要计算的引用时，其调用者为undefined
 
+## this绑定的优先级
+
+new绑定 > 显式绑定 >隐式绑定 >默认绑定
+
+且bind > apply || call
+
 ## 参考资料
 
 <https://github.com/mqyqingfeng/Blog/issues/7>
