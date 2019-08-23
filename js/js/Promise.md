@@ -31,7 +31,7 @@ const promise1 = new Promise(function(resolve, reject) {
 
 ## 使用`Promise`
 
-支持链式调用，`resolve`时调用`onFulfilled`，`reject`时调用`onRejected`。
+支持链式调用，`resolve`时调用`onFulfilled`，`reject`时调用`onRejected`。`onRejected`在发生错误时触发，但无法捕获错误，必须使用catch捕获错误。
 
 ```javascript
 // 语法
