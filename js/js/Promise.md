@@ -66,7 +66,6 @@ promise1.then(function(value) {
   // logs: 0, 1, 2
   ```
 
-  
 
 ## `catch()`
 
@@ -110,23 +109,6 @@ fetch(myRequest).then(function(response) {
   .finally(function() { isLoading = false; });
 ```
 
-## `allSettled()`
-
-`Promise.allSettled()`方法返回一个promise，该promise在所有给定的promise已被解析或被拒绝后解析，并且每个对象都描述每个promise的结果。
-
-```javascript
-const promise1 = Promise.resolve(3);
-const promise2 = new Promise((resolve, reject) => setTimeout(reject, 100, 'foo'));
-const promises = [promise1, promise2];
-
-Promise.allSettled(promises).
-  then((results) => results.forEach((result) => console.log(result.status)));
-
-// expected output:
-// "fulfilled"
-// "rejected"
-```
-
 ##  静态方法
 
 ### `resolve()`和`reject()`
@@ -160,6 +142,23 @@ Promise.race([p1, p2]).then(function(value) {
   console.log(value); // "two"
   // 两个都完成，但 p2 更快
 });
+```
+
+### `allSettled()`
+
+`Promise.allSettled()`方法返回一个promise，该promise在所有给定的promise已被解析或被拒绝后解析，并且每个对象都描述每个promise的结果。
+
+```javascript
+const promise1 = Promise.resolve(3);
+const promise2 = new Promise((resolve, reject) => setTimeout(reject, 100, 'foo'));
+const promises = [promise1, promise2];
+
+Promise.allSettled(promises).
+  then((results) => results.forEach((result) => console.log(result.status)));
+
+// expected output:
+// "fulfilled"
+// "rejected"
 ```
 
 ## 实现一个Promise
