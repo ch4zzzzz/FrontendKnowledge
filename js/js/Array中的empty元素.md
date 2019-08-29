@@ -62,6 +62,16 @@ console.log(arr);
   // undefined
   ```
 
+* 使用includes时的表现
+
+  ```javascript
+  console.log(arr)
+  // logs: [1, empty × 4]
+  
+  arr.includes(undefined)
+  // true
+  ```
+
 ## 如何产生empty元素？
 
 * 直接拉长数组长度
