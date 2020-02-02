@@ -4,9 +4,11 @@
 
 * `Object.assign`通过复制一个或多个对象来创建一个新的对象。
 
-   `Object.assign`拷贝的是属性值。假如源对象的属性值是一个对象的引用，那么它也只指向那个引用。
+  `Object.assign`拷贝的是属性值。假如源对象的属性值是一个对象的引用，那么它也只指向那个引用。
 
-   `Object.assign`只会拷贝可枚举的属性，包括Symbol属性
+  `Object.assign`只会拷贝可枚举的属性，包括Symbol属性
+
+  若属性名相同，则source会覆盖target中的属性
 
   ```javascript
   const target = { a: 1, b: 2 };
